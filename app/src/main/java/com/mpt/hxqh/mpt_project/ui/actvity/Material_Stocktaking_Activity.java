@@ -503,7 +503,7 @@ public class Material_Stocktaking_Activity extends BaseActivity {
                     String now = format.format(date);
                     ulist.get(i).setCHECKDATE(now);
                     ulist.get(i).setQTYINSTK("1");
-                    ulist.get(i).setSTOCKTAKER(preferences.getString("nowUser",""));
+                    ulist.get(i).setSTOCKTAKER(AccountUtils.getpersonId(this));
                     ulist.get(i).setISSCAN(1);//1显示绿色，0显示默认颜色
 
                     stocktList.add(ulist.get(i));
@@ -643,6 +643,7 @@ public class Material_Stocktaking_Activity extends BaseActivity {
 //                            MessageUtils.showMiddleToast(Material_Stocktaking_Activity.this,"Please count data...");
 //                            }else {
                                 submitData();
+                                showProgressDialog("waiting....");
 //                            }
                             break;
 
@@ -677,7 +678,7 @@ public class Material_Stocktaking_Activity extends BaseActivity {
 
                 String reviseresult = "";
                 for (int i = 0; i < stocktList.size(); i++) {
-
+                    stocktList.get(i).setSTOCKTAKER(AccountUtils.getpersonId(Material_Stocktaking_Activity.this));
                     UDSTOCKTLINE line = stocktList.get(i);
                     Log.i(TAG,"UDSTOCKTLINEID="+line.getUDSTOCKTLINEID() + stocktList.size());
                     reviseresult = AndroidClientService.UpdateWO(Material_Stocktaking_Activity.this, JsonUtils.encapsulationUdstocktline(line), "UDSTOCKTLINE",

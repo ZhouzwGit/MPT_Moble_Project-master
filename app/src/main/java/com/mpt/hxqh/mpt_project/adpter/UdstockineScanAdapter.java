@@ -43,7 +43,7 @@ public class UdstockineScanAdapter extends BaseQuickAdapter<UDSTOCKTLINE> {
     protected void convert(final BaseViewHolder helper, final UDSTOCKTLINE item) {
         Log.i(TAG, "item=" + item.getUDSTOCKTLINEID());
 
-        if (item.getSTKRESULT().equals("MATCH")) {
+        if (item.getSTKRESULT()!=null&&item.getSTKRESULT().equals("MATCH")) {
             helper.setBackgroundRes(R.id.card_container, R.color.blue);
         } else {
             helper.setBackgroundRes(R.id.card_container, R.color.white);

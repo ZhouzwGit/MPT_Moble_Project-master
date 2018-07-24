@@ -38,9 +38,9 @@ public final class CameraManager {
     private static final String TAG = CameraManager.class.getSimpleName();
 
     private static final int MIN_FRAME_WIDTH = 240;
-    private static final int MIN_FRAME_HEIGHT = 240;
+    private static final int MIN_FRAME_HEIGHT = 120;
     private static final int MAX_FRAME_WIDTH = 480;
-    private static final int MAX_FRAME_HEIGHT = 360;
+    private static final int MAX_FRAME_HEIGHT = 180;
 
     private static CameraManager cameraManager;
 
@@ -257,9 +257,9 @@ public final class CameraManager {
 
             DisplayMetrics metrics = context.getResources().getDisplayMetrics();
 
-            int width = (int) (metrics.widthPixels * 0.6);
+            int width = (int) (metrics.widthPixels);
 
-            int height = (int) (width * 0.9);
+            int height = (int) (width * 0.3);
 
 
             int leftOffset = (screenResolution.x - width) / 2;
