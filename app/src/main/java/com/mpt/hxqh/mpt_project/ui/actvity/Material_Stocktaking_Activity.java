@@ -6,6 +6,7 @@ import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.NavUtils;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -390,7 +391,7 @@ public class Material_Stocktaking_Activity extends BaseActivity {
             public void onSuccess(Results results, int totalPages, int currentPage) {
                 ArrayList<ASSET> item = JsonUtils.parsingASSET(results.getResultlist());
                 if (item == null || item.isEmpty()) {
-                    update1(serialnum);
+                    //update1(serialnum);
                 } else {
                     update(item.get(0).getSERIALNUM());
                 }
@@ -639,11 +640,25 @@ public class Material_Stocktaking_Activity extends BaseActivity {
                             break;
                         case 1://Confirm
                             normalListDialog.superDismiss();
-//                            if(null==stocktList||stocktList.size()==0){
-//                            MessageUtils.showMiddleToast(Material_Stocktaking_Activity.this,"Please count data...");
-//                            }else {
-                                submitData();
-                                showProgressDialog("waiting....");
+                            boolean flag = false;
+                                for (int i = 0;i<udstockineAdapter.getItemCount();i++){
+                                    UDSTOCKTLINE udstocktline = udstockineAdapter.getItem(i);
+                                    if (udstocktline.getSERIALNUM()!=null && !udstocktline.getSERIALNUM().equals("")){
+                                        if (udstocktline.getCHECKSERIAL() != null && !udstocktline.getCHECKSERIAL().equals("")){
+                                            if (!udstocktline.getSERIALNUM().trim().equalsIgnoreCase(udstocktline.getCHECKSERIAL().trim())){
+                                                flag = true;
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                                if (flag){
+                                    Toast.makeText(Material_Stocktaking_Activity.this, "There are some records not macthed",Toast.LENGTH_SHORT).show();
+                                }else {
+                                    submitData();
+                                    showProgressDialog("waiting....");
+                                }
+
 //                            }
                             break;
 
@@ -662,7 +677,7 @@ public class Material_Stocktaking_Activity extends BaseActivity {
                 List<UDSTOCKTLINE> ulist = udstockineAdapter.getData();
                 Log.e(TAG,ulist.size()+"kkkkk");
                 Date date = new Date();
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:dd");
+                SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy hh:mm:dd");
                 String now = format.format(date);
                    for (int i = 0; i < ulist.size(); i++) {
                        UDSTOCKTLINE item = ulist.get(i);
@@ -676,27 +691,41 @@ public class Material_Stocktaking_Activity extends BaseActivity {
                        stocktList.add(item);
                    }
 
-                String reviseresult = "";
+                StringBuffer reviseresult = new StringBuffer("");
                 for (int i = 0; i < stocktList.size(); i++) {
                     stocktList.get(i).setSTOCKTAKER(AccountUtils.getpersonId(Material_Stocktaking_Activity.this));
                     UDSTOCKTLINE line = stocktList.get(i);
                     Log.i(TAG,"UDSTOCKTLINEID="+line.getUDSTOCKTLINEID() + stocktList.size());
-                    reviseresult = AndroidClientService.UpdateWO(Material_Stocktaking_Activity.this, JsonUtils.encapsulationUdstocktline(line), "UDSTOCKTLINE",
+                    String result = AndroidClientService.UpdateWO(Material_Stocktaking_Activity.this, JsonUtils.encapsulationUdstocktline(line), "UDSTOCKTLINE",
                             "UDSTOCKTLINEID", line.getUDSTOCKTLINEID()
                             , Constants.WORK_URL);
+                    if (result==null|| result.equals("")){
+                        reviseresult.append("%%fail");
+                    }else {
+                        reviseresult.append("%%"+result);
+                    }
                 }
 
-                return reviseresult;
+                return reviseresult.toString();
             }
 
             @Override
             protected void onPostExecute(String workResult) {
                 super.onPostExecute(workResult);
-                if (workResult == null) {
-                    Toast.makeText(Material_Stocktaking_Activity.this, "Confim fail", Toast.LENGTH_SHORT).show();
+                String[] results = workResult.split("%%");
+                StringBuffer errormessage = new StringBuffer();
+                boolean flag = true;
+                for (int i = 0;i < results.length;i++){
+                    if (results[i].equals("fail")){
+                        errormessage.append("The  " + i + " record confim failed!\n");
+                        flag = false;
+                        break;
+                    }
+                }
+                if (!flag) {
+                    Toast.makeText(Material_Stocktaking_Activity.this, errormessage + "Please check the records or contact the administrator", Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(Material_Stocktaking_Activity.this, "Confim successfully", Toast.LENGTH_SHORT).show();
-                     finish();
                 }
                 closeProgressDialog();
             }

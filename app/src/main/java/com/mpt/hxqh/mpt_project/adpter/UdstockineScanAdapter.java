@@ -5,6 +5,7 @@ import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,7 +61,7 @@ public class UdstockineScanAdapter extends BaseQuickAdapter<UDSTOCKTLINE> {
         }
         helper.setText(R.id.stkresult_text_id,item.getSTKRESULT());
         helper.setText(R.id.stockremark_text_id,item.getREMARK());
-        final EditText t = (EditText) helper.getView(R.id.new_sn_text_id);
+        EditText t = (EditText) helper.getView(R.id.new_sn_text_id);
         final EditText r = (EditText) helper.getView(R.id.stockremark_text_id);
         final EditText p = (EditText) helper.getView(R.id.quantiy_text_id);
         t.addTextChangedListener(new TextWatcher() {
@@ -89,10 +90,12 @@ public class UdstockineScanAdapter extends BaseQuickAdapter<UDSTOCKTLINE> {
                             data.get(i).setCHECKSERIAL(s.toString());
                             data.get(i).setSTKRESULT("MATCH");
                             helper.setText(R.id.stkresult_text_id,"MATCH");
+                            data.get(i).setISCHECK("Y");
                             Log.e("SN IN STOCKTAKING", s.toString());
                         }else if (s.toString()!=null && !s.toString().equals("")){
                             data.get(i).setCHECKSERIAL(s.toString());
                             data.get(i).setSTKRESULT("NOT MATCH");
+                            data.get(i).setISCHECK("Y");
                             helper.setText(R.id.stkresult_text_id,"NOT MATCH");
                         }else {
                             data.get(i).setSTKRESULT("");
