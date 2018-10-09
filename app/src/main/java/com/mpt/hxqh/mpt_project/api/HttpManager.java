@@ -397,6 +397,11 @@ public class HttpManager {
         return "{'appid':'" + Constants.UDSTOCKT_APPID + "','objectname':'" + Constants.UDSTOCKTLINE_NAME + "','curpage':" + curpage + ",'showcount':" + showcount + ",'option':'read','condition':{'STOCKTNUM':'=" + stocktnum + "'}}";
 
     }
+    public static String getUDSTOCKTLINEURL(String stocktnum) {
+        return "{'appid':'" + Constants.UDSTOCKT_APPID + "','objectname':'" + Constants.UDSTOCKTLINE_NAME + "','option':'read','condition':{'STOCKTNUM':'=" + stocktnum + "'}}";
+
+    }
+
 
     /**
      * 设置采购接收*

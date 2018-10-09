@@ -86,7 +86,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         mPassword = (EditText) findViewById(R.id.user_login_password);
         checkBox = (CheckBox) findViewById(R.id.isremenber_password);
         mLogin = (Button) findViewById(R.id.user_login);
-
         ipconfig = (TextView) findViewById(R.id.ipconfig);
         quit = (TextView) findViewById(R.id.quit);
         properties = (TextView) findViewById(R.id.properties);

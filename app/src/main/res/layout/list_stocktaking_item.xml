@@ -36,7 +36,7 @@
             android:text="@string/have_not_data"
             android:textColor="@color/black"></TextView>
 
-        <EditText
+        <TextView
             android:id="@+id/new_sn_text_id"
             android:layout_width="0dp"
             android:layout_height="@dimen/dimens_40dp"
@@ -44,7 +44,7 @@
             android:gravity="center"
             android:text="@string/have_not_data"
             android:textSize="@dimen/dimens_12sp"
-            android:textColor="@color/black"></EditText>
+            android:textColor="@color/black"></TextView>
 
         <TextView
             android:id="@+id/QTY_text_id"

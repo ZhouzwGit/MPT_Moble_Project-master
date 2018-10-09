@@ -110,7 +110,7 @@ public class Material_Stocktaking_Activity extends BaseActivity {
     private LinearLayout buttonLayout;
     private Button quit;
     private Button option;
-    private EditText snnew;
+    private TextView snnew;
     private String[] optionList = new String[]{"Back", "Confirm"};
     private BaseAnimatorSet mBasIn;
     private BaseAnimatorSet mBasOut;
@@ -153,7 +153,7 @@ public class Material_Stocktaking_Activity extends BaseActivity {
         buttonLayout = (LinearLayout) findViewById(R.id.button_layout);
         quit = (Button) findViewById(R.id.quit);
         option = (Button) findViewById(R.id.option);
-        snnew = (EditText) findViewById(R.id.new_sn_text_id);
+        snnew = (TextView) findViewById(R.id.new_sn_text_id);
 
     }
 
@@ -225,8 +225,9 @@ public class Material_Stocktaking_Activity extends BaseActivity {
     private SwipeRefreshLayout.OnLoadListener refreshOnLoadListener = new SwipeRefreshLayout.OnLoadListener() {
         @Override
         public void onLoad() {
-            page++;
-            //getData();
+           /* page++;
+            //getData();*/
+           refresh_layout.setLoading(false);
         }
     };
 
@@ -236,10 +237,11 @@ public class Material_Stocktaking_Activity extends BaseActivity {
     private void initAdapter(final List<UDSTOCKTLINE> list) {
         nodatalayout.setVisibility(View.GONE);
         udstockineAdapter = new UdstockineScanAdapter(Material_Stocktaking_Activity.this, R.layout.list_stocktaking_item, list);
+        udstockineAdapter.setStatus(status);
         recyclerView.setAdapter(udstockineAdapter);
-        udstockineAdapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
+        udstockineAdapter.setOnRecyclerViewItemChildClickListener(new BaseQuickAdapter.OnRecyclerViewItemChildClickListener() {
             @Override
-            public void onItemClick(View view, int position) {
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
 
             }
         });
@@ -369,11 +371,12 @@ public class Material_Stocktaking_Activity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case STOCKTAKING_CODE:
-                String results = data.getExtras().getString("result");
-                isExistSN(results);
+                if (data!=null){
+                    String results = data.getExtras().getString("result");
+                    isExistSN(results);
+                }
                 break;
         }
-
     }
 
 
@@ -391,7 +394,7 @@ public class Material_Stocktaking_Activity extends BaseActivity {
             public void onSuccess(Results results, int totalPages, int currentPage) {
                 ArrayList<ASSET> item = JsonUtils.parsingASSET(results.getResultlist());
                 if (item == null || item.isEmpty()) {
-                    //update1(serialnum);
+                    update1(serialnum);
                 } else {
                     update(item.get(0).getSERIALNUM());
                 }
@@ -462,11 +465,10 @@ public class Material_Stocktaking_Activity extends BaseActivity {
     private void update(String serialnum) {
         int j = 0;
         List<UDSTOCKTLINE> ulist = udstockineAdapter.getData();
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Material_Stocktaking_Activity.this);
         for (int i = 0; i < ulist.size(); i++) {
             String sn = ulist.get(i).getSERIALNUM();
             if (sn != null){
-                if (sn.equals(serialnum)) {
+                if (sn.trim().equals(serialnum.trim())) {
                     j = j + 1;
                     ulist.get(i).setCHECKSERIAL(sn);  //将SN加入到new sn 中
                     ulist.get(i).setSTKRESULT("MATCH");
@@ -474,7 +476,7 @@ public class Material_Stocktaking_Activity extends BaseActivity {
                     Date  date = new Date();
                     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:dd");
                     String now = format.format(date);
-                    ulist.get(i).setSTOCKTAKER(preferences.getString("nowUser",""));
+                    ulist.get(i).setSTOCKTAKER(AccountUtils.getpersonId(this));
                     ulist.get(i).setQTYINSTK("1");
                     ulist.get(i).setCHECKDATE(now);
                     stocktList.add(ulist.get(i));
@@ -683,11 +685,7 @@ public class Material_Stocktaking_Activity extends BaseActivity {
                        UDSTOCKTLINE item = ulist.get(i);
                        String sn = ulist.get(i).getCHECKSERIAL();
                        String sn2 = ulist.get(i).getSERIALNUM();
-                       if (sn != null || sn2 == null){
-
-                       }else{
-                           item.setCHECKDATE(now);
-                       }
+                       item.setCHECKDATE(now);
                        stocktList.add(item);
                    }
 

@@ -168,4 +168,65 @@ public class UDSTOCKTLINE implements Serializable {
     public void setUDSTOCKTLINEID(String UDSTOCKTLINEID) {
         this.UDSTOCKTLINEID = UDSTOCKTLINEID;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        UDSTOCKTLINE that = (UDSTOCKTLINE) o;
+
+        if (ISSCAN != that.ISSCAN) return false;
+        if (STOCKTNUM != null ? !STOCKTNUM.equals(that.STOCKTNUM) : that.STOCKTNUM != null)
+            return false;
+        if (ASSETNUM != null ? !ASSETNUM.equals(that.ASSETNUM) : that.ASSETNUM != null)
+            return false;
+        if (ITEMNUM != null ? !ITEMNUM.equals(that.ITEMNUM) : that.ITEMNUM != null) return false;
+        if (CATEGORY != null ? !CATEGORY.equals(that.CATEGORY) : that.CATEGORY != null)
+            return false;
+        if (CONFIGURE != null ? !CONFIGURE.equals(that.CONFIGURE) : that.CONFIGURE != null)
+            return false;
+        if (CHECKSERIAL != null ? !CHECKSERIAL.equals(that.CHECKSERIAL) : that.CHECKSERIAL != null)
+            return false;
+        if (PHASE != null ? !PHASE.equals(that.PHASE) : that.PHASE != null) return false;
+        if (REMARK != null ? !REMARK.equals(that.REMARK) : that.REMARK != null) return false;
+        if (LINE != null ? !LINE.equals(that.LINE) : that.LINE != null) return false;
+        if (SERIALNUM != null ? !SERIALNUM.equals(that.SERIALNUM) : that.SERIALNUM != null)
+            return false;
+        if (ISCHECK != null ? !ISCHECK.equals(that.ISCHECK) : that.ISCHECK != null) return false;
+        if (UDSTOCKTLINEID != null ? !UDSTOCKTLINEID.equals(that.UDSTOCKTLINEID) : that.UDSTOCKTLINEID != null)
+            return false;
+        if (QUANTITY != null ? !QUANTITY.equals(that.QUANTITY) : that.QUANTITY != null)
+            return false;
+        if (STKRESULT != null ? !STKRESULT.equals(that.STKRESULT) : that.STKRESULT != null)
+            return false;
+        if (CHECKDATE != null ? !CHECKDATE.equals(that.CHECKDATE) : that.CHECKDATE != null)
+            return false;
+        if (QTYINSTK != null ? !QTYINSTK.equals(that.QTYINSTK) : that.QTYINSTK != null)
+            return false;
+        return STOCKTAKER != null ? STOCKTAKER.equals(that.STOCKTAKER) : that.STOCKTAKER == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = STOCKTNUM != null ? STOCKTNUM.hashCode() : 0;
+        result = 31 * result + (ASSETNUM != null ? ASSETNUM.hashCode() : 0);
+        result = 31 * result + (ITEMNUM != null ? ITEMNUM.hashCode() : 0);
+        result = 31 * result + (CATEGORY != null ? CATEGORY.hashCode() : 0);
+        result = 31 * result + (CONFIGURE != null ? CONFIGURE.hashCode() : 0);
+        result = 31 * result + (CHECKSERIAL != null ? CHECKSERIAL.hashCode() : 0);
+        result = 31 * result + (PHASE != null ? PHASE.hashCode() : 0);
+        result = 31 * result + (REMARK != null ? REMARK.hashCode() : 0);
+        result = 31 * result + (LINE != null ? LINE.hashCode() : 0);
+        result = 31 * result + (SERIALNUM != null ? SERIALNUM.hashCode() : 0);
+        result = 31 * result + (ISCHECK != null ? ISCHECK.hashCode() : 0);
+        result = 31 * result + ISSCAN;
+        result = 31 * result + (UDSTOCKTLINEID != null ? UDSTOCKTLINEID.hashCode() : 0);
+        result = 31 * result + (QUANTITY != null ? QUANTITY.hashCode() : 0);
+        result = 31 * result + (STKRESULT != null ? STKRESULT.hashCode() : 0);
+        result = 31 * result + (CHECKDATE != null ? CHECKDATE.hashCode() : 0);
+        result = 31 * result + (QTYINSTK != null ? QTYINSTK.hashCode() : 0);
+        result = 31 * result + (STOCKTAKER != null ? STOCKTAKER.hashCode() : 0);
+        return result;
+    }
 }
