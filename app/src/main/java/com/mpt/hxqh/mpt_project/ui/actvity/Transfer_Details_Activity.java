@@ -92,7 +92,7 @@ public class Transfer_Details_Activity extends BaseActivity {
     private LinearLayout buttonLayout;
     private Button quit;
     private Button option;
-    private String[] optionList = new String[]{"Back", "Route","AddLine"};
+    private String[] optionList = new String[]{"Back", "Route", "Scan","AddLine"};
     private BaseAnimatorSet mBasIn;
     private BaseAnimatorSet mBasOut;
 
@@ -148,7 +148,6 @@ public class Transfer_Details_Activity extends BaseActivity {
             inventory_ownerTextView.setText(invuse.getINVOWNER());
             statusTextView.setText(invuse.getSTATUS());
         }
-
 
 
         layoutManager = new LinearLayoutManager(Transfer_Details_Activity.this);
@@ -220,7 +219,7 @@ public class Transfer_Details_Activity extends BaseActivity {
                 @Override
                 public void onOperItemClick(AdapterView<?> parent, View view, int position, long id) {
 //                    linetypeTextView.setText(linetypeList[position]);
-                    switch (position){
+                    switch (position) {
                         case 0://Back
                             normalListDialog.superDismiss();
                             finish();
@@ -229,17 +228,24 @@ public class Transfer_Details_Activity extends BaseActivity {
                             normalListDialog.superDismiss();
                             if (invuse.getSTATUS().equals(Constants.ASTTRANS_START)) {//启动工作流
                                 MaterialDialogOneBtn();
-                            } else if (!invuse.getSTATUS().equals(Constants.ASTTRANS_END)){//审批工作流
+                            } else if (!invuse.getSTATUS().equals(Constants.ASTTRANS_END)) {//审批工作流
                                 EditDialog();
-                            }else {
+                            } else {
                                 MessageUtils.showMiddleToast(Transfer_Details_Activity.this, "Workflow is finished; cannot start again");
                             }
                             break;
-                        case 2://AddLine
+                        case 2:
                             normalListDialog.superDismiss();
-                            Intent intent = new Intent(Transfer_Details_Activity.this,TransferLine_AddNew_Activity.class);
-                            intent.putExtra("invusenum",invuse.getINVUSENUM());
-                            intent.putExtra("storeroom",invuse.getFROMSTORELOC());
+                            Intent lineIntent = new Intent(Transfer_Details_Activity.this, TransferLine_Activity.class);
+                            lineIntent.putExtra("assetnum",invuse.getINVUSENUM());
+                            lineIntent.putExtra("status",invuse.getSTATUS());
+                            startActivity(lineIntent);
+                            break;
+                        case 3://AddLine
+                            normalListDialog.superDismiss();
+                            Intent intent = new Intent(Transfer_Details_Activity.this, TransferLine_AddNew_Activity.class);
+                            intent.putExtra("invusenum", invuse.getINVUSENUM());
+                            intent.putExtra("storeroom", invuse.getFROMSTORELOC());
                             startActivity(intent);
 
                             break;
@@ -358,7 +364,7 @@ public class Transfer_Details_Activity extends BaseActivity {
             @Override
             protected WorkFlowResult doInBackground(String... strings) {
                 WorkFlowResult result = AndroidClientService.approve(Transfer_Details_Activity.this,
-                        "ASTTRANS", "INVUSE", invuse.getINVUSEID()+"", "INVUSEID", zx, desc,
+                        "ASTTRANS", "INVUSE", invuse.getINVUSEID() + "", "INVUSEID", zx, desc,
                         AccountUtils.getpersonId(Transfer_Details_Activity.this));
                 return result;
             }
@@ -372,7 +378,7 @@ public class Transfer_Details_Activity extends BaseActivity {
                 } else if (s.wonum.equals(invuse.getINVUSEID() + "") && s.errorMsg != null) {
                     statusTextView.setText(s.errorMsg);
                     invuse.setSTATUS(s.errorMsg);
-                    MessageUtils.showMiddleToast(Transfer_Details_Activity.this,"Approval success!");
+                    MessageUtils.showMiddleToast(Transfer_Details_Activity.this, "Approval success!");
                 } else {
                     MessageUtils.showMiddleToast(Transfer_Details_Activity.this, s.errorMsg);
                 }
@@ -381,15 +387,15 @@ public class Transfer_Details_Activity extends BaseActivity {
     }
 
 
-    private SwipeRefreshLayout.OnRefreshListener refreshOnRefreshListener=new SwipeRefreshLayout.OnRefreshListener() {
+    private SwipeRefreshLayout.OnRefreshListener refreshOnRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
         @Override
         public void onRefresh() {
-            page=1;
+            page = 1;
             getData();
         }
     };
 
-    private SwipeRefreshLayout.OnLoadListener refreshOnLoadListener=new SwipeRefreshLayout.OnLoadListener() {
+    private SwipeRefreshLayout.OnLoadListener refreshOnLoadListener = new SwipeRefreshLayout.OnLoadListener() {
         @Override
         public void onLoad() {
             page++;
@@ -418,33 +424,35 @@ public class Transfer_Details_Activity extends BaseActivity {
      * 获取数据*
      */
     private void getData() {
-        HttpManager.getDataPagingInfo(Transfer_Details_Activity.this, HttpManager.getINVUSELINEURL(invuse.getINVUSENUM(), page, 20), new HttpRequestHandler<Results>() {
+        HttpManager.getDataPagingInfo(Transfer_Details_Activity.this, HttpManager.getINVUSELINEURL(invuse.getINVUSENUM(), page, 20,""), new HttpRequestHandler<Results>() {
             @Override
             public void onSuccess(Results results) {
             }
 
             @Override
             public void onSuccess(Results results, int totalPages, int currentPage) {
-                ArrayList<INVUSELINE> item = JsonUtils.parsingINVUSELINE( results.getResultlist());
+                ArrayList<INVUSELINE> item = JsonUtils.parsingINVUSELINE(results.getResultlist());
                 refresh_layout.setRefreshing(false);
                 refresh_layout.setLoading(false);
                 if (item == null || item.isEmpty()) {
                     nodatalayout.setVisibility(View.VISIBLE);
                 } else {
-
                     if (item != null || item.size() != 0) {
                         if (page == 1) {
                             items = new ArrayList<INVUSELINE>();
                             initAdapter(items);
                         }
-                        for (int i = 0; i < item.size(); i++) {
-                            items.add(item.get(i));
+                        if (page > totalPages) {
+                            MessageUtils.showMiddleToast(Transfer_Details_Activity.this, getString(R.string.have_load_out_all_the_data));
+                        } else {
+                            for (int i = 0; i < item.size(); i++) {
+                                items.add(item.get(i));
+                            }
+                            addData(item);
                         }
-                        addData(item);
                     }
                     nodatalayout.setVisibility(View.GONE);
-
-                    initAdapter(items);
+                    // initAdapter(items);
                 }
             }
 
@@ -457,7 +465,6 @@ public class Transfer_Details_Activity extends BaseActivity {
 
     }
 
-
     /**
      * 添加数据*
      */
@@ -468,9 +475,9 @@ public class Transfer_Details_Activity extends BaseActivity {
     private View.OnClickListener addOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(Transfer_Details_Activity.this,TransferLine_AddNew_Activity.class);
-            intent.putExtra("invusenum",invuse.getINVUSENUM());
-            intent.putExtra("storeroom",invuse.getFROMSTORELOC());
+            Intent intent = new Intent(Transfer_Details_Activity.this, TransferLine_AddNew_Activity.class);
+            intent.putExtra("invusenum", invuse.getINVUSENUM());
+            intent.putExtra("storeroom", invuse.getFROMSTORELOC());
             startActivity(intent);
         }
     };

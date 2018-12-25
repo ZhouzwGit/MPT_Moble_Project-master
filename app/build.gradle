@@ -41,6 +41,7 @@ dependencies {
     compile files('libs/org.apache.http.legacy.jar')
     compile project(':FlycoAnimation_Lib')
     compile project(':FlycoDialog_Lib')
+    compile files('libs/fastjson-1.1.37.jar')
     compile 'com.android.support:design:23.2.0'
     compile project(path: ':FlycoDialog_Lib')
 }

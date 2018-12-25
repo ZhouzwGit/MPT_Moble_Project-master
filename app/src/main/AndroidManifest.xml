@@ -230,6 +230,16 @@
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustUnspecified|stateHidden"></activity>
+        <activity
+            android:name=".ui.actvity.UdretireLine_Activity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".ui.actvity.PoLine_Activity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".ui.actvity.Udtransfline_Activity"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".ui.actvity.TransferLine_Activity"></activity>
     </application>
 
 </manifest>

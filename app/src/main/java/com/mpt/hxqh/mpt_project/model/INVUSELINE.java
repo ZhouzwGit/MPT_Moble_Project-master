@@ -21,7 +21,71 @@ public class INVUSELINE implements Serializable {
     public String TOSITEID;//TOSITEID
     public String TOSTORELOC;//TOSTORELOC
     public String USETYPE;//USETYPE
+    public String SERIALNUM;
+    public String SCANSN;
+    public String SECSCAN;
+    public String REMARK;
 
+    public String getINVUSELINEID() {
+        return INVUSELINEID;
+    }
+
+    public void setINVUSELINEID(String INVUSELINEID) {
+        if (INVUSELINEID!=null&&INVUSELINEID.contains(",")){
+            INVUSELINEID =  INVUSELINEID.replace(",","");
+        }
+        this.INVUSELINEID = INVUSELINEID;
+    }
+
+    public String INVUSELINEID;
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("{");
+        sb.append("\"SERIALNUM\":\"")
+                .append(SERIALNUM == null ? "" : SERIALNUM).append('\"');
+        sb.append(",\"SCANSN\":\"")
+                .append(SCANSN == null ? "" : SCANSN).append('\"');
+        sb.append(",\"SECSCAN\":\"")
+                .append(SECSCAN == null ? "" : SECSCAN).append('\"');
+        sb.append(",\"REMARK\":\"")
+                .append(REMARK == null ? "" : REMARK).append('\"');
+        sb.append(",\"relationShip\":[{\"\":\"\"}]");
+        sb.append('}');
+        return sb.toString();
+    }
+
+    public String getREMARK() {
+        return REMARK;
+    }
+
+    public void setREMARK(String REMARK) {
+        this.REMARK = REMARK;
+    }
+
+    public String getSERIALNUM() {
+        return SERIALNUM;
+    }
+
+    public void setSERIALNUM(String SERIALNUM) {
+        this.SERIALNUM = SERIALNUM;
+    }
+
+    public String getSCANSN() {
+        return SCANSN;
+    }
+
+    public void setSCANSN(String SCANSN) {
+        this.SCANSN = SCANSN;
+    }
+
+    public String getSECSCAN() {
+        return SECSCAN;
+    }
+
+    public void setSECSCAN(String SECSCAN) {
+        this.SECSCAN = SECSCAN;
+    }
 
     public String getINVUSELINENUM() {
         return INVUSELINENUM;

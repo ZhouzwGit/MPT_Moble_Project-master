@@ -38,6 +38,7 @@ import com.mpt.hxqh.mpt_project.bean.Results;
 import com.mpt.hxqh.mpt_project.manager.AppManager;
 import com.mpt.hxqh.mpt_project.model.UDASSETTRANSF;
 import com.mpt.hxqh.mpt_project.ui.widget.SwipeRefreshLayout;
+import com.mpt.hxqh.mpt_project.unit.MessageUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -282,14 +283,18 @@ public class Asset_Udassettransf_Activity extends BaseActivity implements SwipeR
                             items = new ArrayList<UDASSETTRANSF>();
                             initAdapter(items);
                         }
-                        for (int i = 0; i < item.size(); i++) {
-                            items.add(item.get(i));
+                        if (page > totalPages){
+                            MessageUtils.showMiddleToast(Asset_Udassettransf_Activity.this, getString(R.string.have_load_out_all_the_data));
+                        }else {
+                            for (int i = 0; i < item.size(); i++) {
+                                items.add(item.get(i));
+                            }
+                            addData(item);
                         }
-                        addData(item);
                     }
                     nodatalayout.setVisibility(View.GONE);
 
-                    initAdapter(items);
+                    //initAdapter(items);
                 }
             }
 

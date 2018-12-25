@@ -230,8 +230,12 @@ public class HttpManager {
     /**
      * 设置资产转移行表*
      */
-    public static String getINVUSELINEURL(String invusenum, int curpage, int showcount) {
-        return "{'appid':'" + Constants.ASOUTB_NAME + "','objectname':'" + Constants.INVUSELINE_NAME + "','curpage':" + curpage + ",'showcount':" + showcount + ",'option':'read','condition':{'INVUSENUM':'=" + invusenum + "'}}";
+    public static String getINVUSELINEURL(String invusenum, int curpage, int showcount,String sn) {
+        if ("".equals(sn)){
+            return "{'appid':'" + Constants.ASOUTB_NAME + "','objectname':'" + Constants.INVUSELINE_NAME + "','curpage':" + curpage + ",'showcount':" + showcount + ",'option':'read','condition':{'INVUSENUM':'=" + invusenum + "'}}";
+        }else {
+            return "{'appid':'" + Constants.ASOUTB_NAME + "','objectname':'" + Constants.INVUSELINE_NAME + "','curpage':" + curpage + ",'showcount':" + showcount + ",'option':'read','condition':{'INVUSENUM':'=" + invusenum + "','SERIALNUM':'="+sn+"'}}";
+        }
 
     }
 
@@ -291,9 +295,12 @@ public class HttpManager {
     /**
      * 设置资产维修行表*
      */
-    public static String getUDRETIRELINEURL(String retirenum, int curpage, int showcount) {
-        return "{'appid':'" + Constants.UDRETIRE_APPID + "','objectname':'" + Constants.UDRETIRELINE_NAME + "','curpage':" + curpage + ",'showcount':" + showcount + ",'option':'read','condition':{'RETIRENUM':'=" + retirenum + "'}}";
-
+    public static String getUDRETIRELINEURL(String retirenum, int curpage, int showcount,String sn) {
+        if (sn.equals("")){
+            return "{'appid':'" + Constants.UDRETIRE_APPID + "','objectname':'" + Constants.UDRETIRELINE_NAME + "','curpage':" + curpage + ",'showcount':" + showcount + ",'option':'read','condition':{'RETIRENUM':'=" + retirenum + "'}}";
+        }else {
+            return "{'appid':'" + Constants.UDRETIRE_APPID + "','objectname':'" + Constants.UDRETIRELINE_NAME + "','curpage':" + curpage + ",'showcount':" + showcount + ",'option':'read','condition':{'RETIRENUM':'=" + retirenum + "','SERIAL':'="+sn+"'}}";
+        }
     }
 
     /**
@@ -310,8 +317,13 @@ public class HttpManager {
     /**
      * 设置资产移动行表*
      */
-    public static String getUDTRANSFLINEURL(String assettrannum, int curpage, int showcount) {
-        return "{'appid':'" + Constants.ASTRANSF_APPID + "','objectname':'" + Constants.UDTRANSFLINE_NAME + "','curpage':" + curpage + ",'showcount':" + showcount + ",'option':'read','condition':{'ASSETTRANNUM':'=" + assettrannum + "'}}";
+    public static String getUDTRANSFLINEURL(String assettrannum, int curpage, int showcount,String sn) {
+        if ("".equals(sn)){
+            return "{'appid':'" + Constants.ASTRANSF_APPID + "','objectname':'" + Constants.UDTRANSFLINE_NAME + "','curpage':" + curpage + ",'showcount':" + showcount + ",'option':'read','condition':{'ASSETTRANNUM':'=" + assettrannum + "'}}";
+        }else {
+            return "{'appid':'" + Constants.ASTRANSF_APPID + "','objectname':'" + Constants.UDTRANSFLINE_NAME + "','curpage':" + curpage + ",'showcount':" + showcount + ",'option':'read','condition':{'ASSETTRANNUM':'=" + assettrannum + "','SERIALNUM':'="+sn+"'}}";
+
+        }
 
     }
 
@@ -417,8 +429,12 @@ public class HttpManager {
     /**
      * 设置采购接收行*
      */
-    public static String getPOLINEURL(String ponum, int curpage, int showcount) {
-        return "{'appid':'" + Constants.WHIN_APPID + "','objectname':'" + Constants.POLINE_NAME + "','curpage':" + curpage + ",'showcount':" + showcount + ",'option':'read','condition':{'PONUM':'=" + ponum + "'}}";
+    public static String getPOLINEURL(String ponum, int curpage, int showcount,String sn) {
+        if (sn.equals("")){
+            return "{'appid':'" + Constants.WHIN_APPID + "','objectname':'" + Constants.POLINE_NAME + "','curpage':" + curpage + ",'showcount':" + showcount + ",'option':'read','condition':{'PONUM':'=" + ponum + "'}}";
+        }else {
+            return "{'appid':'" + Constants.WHIN_APPID + "','objectname':'" + Constants.POLINE_NAME + "','curpage':" + curpage + ",'showcount':" + showcount + ",'option':'read','condition':{'PONUM':'=" + ponum + "','SERIALNUM':'="+sn+"'}}";
+        }
 
     }
 
@@ -630,7 +646,6 @@ public class HttpManager {
 
                     SafeHandler.onSuccess(handler, result, result.getCurpage(), result.getShowcount());
                     //SafeHandler.onSuccess(handler,result);
-
                 }
             }
         });

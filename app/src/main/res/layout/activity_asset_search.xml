@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/activity_asset__search"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -130,13 +130,14 @@
     </LinearLayout>
 
     <RelativeLayout
+        android:id="@+id/listLayout_id"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:layout_below="@+id/linearlayout">
-
         <include layout="@layout/list"></include>
-
-        <include layout="@layout/asset_buttom2"></include>
     </RelativeLayout>
-
-</RelativeLayout>
+    <include
+        layout="@layout/asset_buttom2"
+        ></include>
+</LinearLayout>

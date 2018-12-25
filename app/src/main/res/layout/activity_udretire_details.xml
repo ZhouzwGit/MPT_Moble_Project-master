@@ -237,7 +237,8 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
 
                     <com.mpt.hxqh.mpt_project.ui.widget.SwipeRefreshLayout
                         android:id="@+id/swipe_container"
@@ -250,7 +251,7 @@
                             android:layout_height="wrap_content"
                             android:background="@color/white"></android.support.v7.widget.RecyclerView>
                     </com.mpt.hxqh.mpt_project.ui.widget.SwipeRefreshLayout>
-                    <include layout="@layout/asset_buttom"></include>
+
                     <LinearLayout
                         android:id="@+id/have_not_data_id"
                         android:layout_width="match_parent"
@@ -266,9 +267,8 @@
                             android:textSize="@dimen/abc_action_bar_content_inset_material" />
                     </LinearLayout>
                 </RelativeLayout>
+                <include layout="@layout/asset_buttom"></include>
             </LinearLayout>
-
-
         </LinearLayout>
     </ScrollView>
 

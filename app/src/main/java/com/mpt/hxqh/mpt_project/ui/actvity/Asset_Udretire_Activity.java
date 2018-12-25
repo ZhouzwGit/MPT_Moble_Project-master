@@ -10,8 +10,10 @@ import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ImageSpan;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -38,6 +40,7 @@ import com.mpt.hxqh.mpt_project.bean.Results;
 import com.mpt.hxqh.mpt_project.manager.AppManager;
 import com.mpt.hxqh.mpt_project.model.UDRETIRE;
 import com.mpt.hxqh.mpt_project.ui.widget.SwipeRefreshLayout;
+import com.mpt.hxqh.mpt_project.unit.MessageUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -276,20 +279,22 @@ public class Asset_Udretire_Activity extends BaseActivity implements SwipeRefres
                 if (item == null || item.isEmpty()) {
                     nodatalayout.setVisibility(View.VISIBLE);
                 } else {
-
-                    if (item != null || item.size() != 0) {
-                        if (page == 1) {
-                            items = new ArrayList<UDRETIRE>();
-                            initAdapter(items);
+                        if (item != null || item.size() != 0) {
+                            if (page == 1) {
+                                items = new ArrayList<UDRETIRE>();
+                                initAdapter(items);
+                            }
+                            if (page > totalPages) {
+                                MessageUtils.showMiddleToast(Asset_Udretire_Activity.this, getString(R.string.have_load_out_all_the_data));
+                            } else {
+                                for (int i = 0; i < item.size(); i++) {
+                                    items.add(item.get(i));
+                                }
+                                addData(item);
+                            }
                         }
-                        for (int i = 0; i < item.size(); i++) {
-                            items.add(item.get(i));
-                        }
-                        addData(item);
-                    }
-                    nodatalayout.setVisibility(View.GONE);
-
-                    initAdapter(items);
+                        nodatalayout.setVisibility(View.GONE);
+                        //initAdapter(items);
                 }
             }
 

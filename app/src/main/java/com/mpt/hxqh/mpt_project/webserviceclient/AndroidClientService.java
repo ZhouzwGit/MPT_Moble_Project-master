@@ -489,7 +489,7 @@ public class AndroidClientService {
         soapReq.addProperty("STOCKTNUM", STOCKTNUM);
         soapReq.addProperty("SERIALNUM", serialnum);
         soapReq.addProperty("CREATEBY", creatby);
-        soapReq.addProperty("LINE", line);
+        //soapReq.addProperty("LINE", line);
         soapEnvelope.setOutputSoapObject(soapReq);
         HttpTransportSE httpTransport = new HttpTransportSE(AccountUtils.getIpAddress(context) + url, timeOut);
         try {
@@ -502,7 +502,6 @@ public class AndroidClientService {
         WebResult webResult = null;
         try {
             obj = soapEnvelope.getResponse().toString();
-
             Log.i(TAG, "obj=" + obj);
             webResult = JsonUtils.parsingWebResult1(obj);
         } catch (SoapFault soapFault) {
@@ -1020,14 +1019,9 @@ public class AndroidClientService {
         String obj = null;
 
         try {
-
             obj = soapEnvelope.getResponse().toString();
-
-
         } catch (SoapFault soapFault) {
-
             soapFault.printStackTrace();
-
         }
         return obj;
     }

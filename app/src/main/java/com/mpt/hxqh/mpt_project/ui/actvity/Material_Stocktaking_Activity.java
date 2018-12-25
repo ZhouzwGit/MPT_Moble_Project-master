@@ -145,7 +145,6 @@ public class Material_Stocktaking_Activity extends BaseActivity {
     protected void findViewById() {
         backImageView = (ImageView) findViewById(R.id.title_back_id);
         titleTextView = (TextView) findViewById(R.id.title_name);
-
         scanButton = (Button) findViewById(R.id.snscan_button_id);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView_id);
         refresh_layout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
@@ -255,9 +254,7 @@ public class Material_Stocktaking_Activity extends BaseActivity {
         HttpManager.getDataPagingInfo2(Material_Stocktaking_Activity.this, HttpManager.getUDSTOCKTLINEURL(stocktnum, page, 500), new HttpRequestHandler<Results>() {
             @Override
             public void onSuccess(Results data) {
-
             }
-
             @Override
             public void onSuccess(Results data, int totalPages, int currentPage) {
                 ArrayList<UDSTOCKTLINE> item = JsonUtils.parsingUDSTOCKTLINE(data.getResultlist());
@@ -448,7 +445,6 @@ public class Material_Stocktaking_Activity extends BaseActivity {
 
             @Override
             public void onFailure(String error) {
-                num = 1111;
             }
         });
 

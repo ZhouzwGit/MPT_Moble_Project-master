@@ -13,6 +13,70 @@ public class UDTRANSFLINE implements Serializable {
     public String CREATED;//CREATED
     public String FROMSITE;//FROMSITE
     public String TOSITE;//TOSITE
+    public String SERIALNUM;
+    public String UDREMARK;
+    public String SCANSN;
+    public String SECSCAN;
+    public String UDTRANSFLINEID;
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("{");
+        sb.append("\"UDREMARK\":\"")
+                .append(UDREMARK == null? "" : UDREMARK).append('\"');
+        sb.append(",\"SCANSN\":\"")
+                .append(SCANSN==null?"":SCANSN).append('\"');
+        sb.append(",\"SECSCAN\":\"")
+                .append(SECSCAN==null?"":SECSCAN).append('\"');
+        sb.append(",\"UDTRANSFLINEID\":\"")
+                .append(UDTRANSFLINEID).append('\"');
+        sb.append(",\"relationShip\":[{\"\":\"\"}]");
+        sb.append('}');
+        return sb.toString();
+    }
+
+    public String getUDTRANSFLINEID() {
+        return UDTRANSFLINEID;
+    }
+
+    public void setUDTRANSFLINEID(String UDTRANSFLINEID) {
+        if (UDTRANSFLINEID!=null && UDTRANSFLINEID.contains(",")){
+            UDTRANSFLINEID = UDTRANSFLINEID.replace(",","");
+        }
+        this.UDTRANSFLINEID = UDTRANSFLINEID;
+    }
+
+    public String getSCANSN() {
+        return SCANSN;
+    }
+
+    public void setSCANSN(String SCANSN) {
+        this.SCANSN = SCANSN;
+    }
+
+    public String getSECSCAN() {
+        return SECSCAN;
+    }
+
+    public void setSECSCAN(String SECSCAN) {
+        this.SECSCAN = SECSCAN;
+    }
+
+    public String getUDREMARK() {
+        return UDREMARK;
+    }
+
+    public void setUDREMARK(String UDREMARK) {
+        this.UDREMARK = UDREMARK;
+    }
+
+    public String getSERIALNUM() {
+        return SERIALNUM;
+    }
+
+    public void setSERIALNUM(String SERIALNUM) {
+        this.SERIALNUM = SERIALNUM;
+    }
 
     public String getASSETNUM() {
         return ASSETNUM;

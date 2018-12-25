@@ -8,12 +8,15 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.flyco.animation.BaseAnimatorSet;
 import com.flyco.animation.BounceEnter.BounceTopEnter;
@@ -96,7 +99,7 @@ public class Udretire_Details_Activity extends BaseActivity {
     private BaseAnimatorSet mBasIn;
     private BaseAnimatorSet mBasOut;
 
-    private String[] optionList = new String[]{"Back", "Route", "AddLine"};
+    private String[] optionList = new String[]{"Back", "Route", "Scan", "AddLine"};
 
     private ProgressDialog mProgressDialog;
 
@@ -241,13 +244,24 @@ public class Udretire_Details_Activity extends BaseActivity {
                                 MessageUtils.showMiddleToast(Udretire_Details_Activity.this, "Workflow is finished; cannot start again");
                             }
                             break;
-                        case 2://AddLine
+                        case 2:
+                            normalListDialog.superDismiss();
+                            if ("WHAPPR".equals(udretire.STATUS) || "APPR".equals(udretire.STATUS)) {
+                                Intent lineintent = new Intent(Udretire_Details_Activity.this, UdretireLine_Activity.class);
+                                lineintent.putExtra("assetnum", udretire.getRETIRENUM());
+                                lineintent.putExtra("status",udretire.getSTATUS());
+                                startActivity(lineintent);
+                            }else {
+                                Toast.makeText(Udretire_Details_Activity.this,"Not in scaning status",Toast.LENGTH_SHORT).show();
+                            }
+
+                            break;
+                        case 3://AddLine
                             normalListDialog.superDismiss();
                             Intent intent = new Intent(Udretire_Details_Activity.this, UdretireLine_AddNew_Activity.class);
                             intent.putExtra("repairnum", udretire.getRETIRENUM());
                             intent.putExtra("LOCATION", udretire.getLOCATION());
                             startActivity(intent);
-
                             break;
                     }
 //                    normalListDialog.dismiss();
@@ -424,8 +438,8 @@ public class Udretire_Details_Activity extends BaseActivity {
      * 获取数据*
      */
     private void getData() {
-        Log.i(TAG, "num=" + udretire.getRETIRENUM());
-        HttpManager.getDataPagingInfo(Udretire_Details_Activity.this, HttpManager.getUDRETIRELINEURL(udretire.getRETIRENUM(), page, 20), new HttpRequestHandler<Results>() {
+       // Log.i(TAG, "num=" + udretire.getRETIRENUM());
+        HttpManager.getDataPagingInfo(Udretire_Details_Activity.this, HttpManager.getUDRETIRELINEURL(udretire.getRETIRENUM(), page, 20, ""), new HttpRequestHandler<Results>() {
             @Override
             public void onSuccess(Results results) {
             }
@@ -438,20 +452,23 @@ public class Udretire_Details_Activity extends BaseActivity {
                 if (item == null || item.isEmpty()) {
                     nodatalayout.setVisibility(View.VISIBLE);
                 } else {
-
-                    if (item != null || item.size() != 0) {
-                        if (page == 1) {
-                            items = new ArrayList<UDRETIRELINE>();
-                            initAdapter(items);
+                        if (item != null || item.size() != 0) {
+                            if (page == 1) {
+                                items = new ArrayList<UDRETIRELINE>();
+                                initAdapter(items);
+                            }
+                            if (page > totalPages) {
+                                MessageUtils.showMiddleToast(Udretire_Details_Activity.this, getString(R.string.have_load_out_all_the_data));
+                            } else {
+                                for (int i = 0; i < item.size(); i++) {
+                                    items.add(item.get(i));
+                                }
+                                addData(item);
+                            }
                         }
-                        for (int i = 0; i < item.size(); i++) {
-                            items.add(item.get(i));
-                        }
-                        addData(item);
-                    }
-                    nodatalayout.setVisibility(View.GONE);
+                        nodatalayout.setVisibility(View.GONE);
 
-                    initAdapter(items);
+                       // initAdapter(items);
                 }
             }
 

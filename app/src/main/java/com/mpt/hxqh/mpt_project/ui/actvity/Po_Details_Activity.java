@@ -81,7 +81,7 @@ public class Po_Details_Activity extends BaseActivity {
     private Button quit;
     private Button option;
     //    private String[] optionList = new String[]{"Back","AddLine"};
-    private String[] optionList = new String[]{"Back"};
+    private String[] optionList = new String[]{"Back","Scan"};
     private BaseAnimatorSet mBasIn;
     private BaseAnimatorSet mBasOut;
 
@@ -210,6 +210,12 @@ public class Po_Details_Activity extends BaseActivity {
                             normalListDialog.superDismiss();
                             finish();
                             break;
+                        case 1://Scac
+                            Intent intent = new Intent(Po_Details_Activity.this,PoLine_Activity.class);
+                            intent.putExtra("assetnum",po.getPONUM());
+                            startActivity(intent);
+                            normalListDialog.superDismiss();
+                            break;
 //                        case 1://AddLine
 //                            normalListDialog.superDismiss();
 //                            Intent intent = new Intent(Po_Details_Activity.this,PoLine_AddNew_Activity.class);
@@ -262,7 +268,7 @@ public class Po_Details_Activity extends BaseActivity {
      * 获取数据*
      */
     private void getData() {
-        HttpManager.getDataPagingInfo(Po_Details_Activity.this, HttpManager.getPOLINEURL(po.getPONUM(), page, 20), new HttpRequestHandler<Results>() {
+        HttpManager.getDataPagingInfo(Po_Details_Activity.this, HttpManager.getPOLINEURL(po.getPONUM(), page, 20,""), new HttpRequestHandler<Results>() {
             @Override
             public void onSuccess(Results results) {
             }

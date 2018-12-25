@@ -22,6 +22,7 @@ import com.flyco.dialog.widget.NormalListDialog;
 import com.mpt.hxqh.mpt_project.R;
 import com.mpt.hxqh.mpt_project.adpter.BaseQuickAdapter;
 import com.mpt.hxqh.mpt_project.adpter.UdtransflineAdapter;
+import com.mpt.hxqh.mpt_project.adpter.Udtransfline_ScanAdapter;
 import com.mpt.hxqh.mpt_project.api.HttpManager;
 import com.mpt.hxqh.mpt_project.api.HttpRequestHandler;
 import com.mpt.hxqh.mpt_project.api.JsonUtils;
@@ -30,6 +31,7 @@ import com.mpt.hxqh.mpt_project.manager.AppManager;
 import com.mpt.hxqh.mpt_project.model.UDASSETTRANSF;
 import com.mpt.hxqh.mpt_project.model.UDTRANSFLINE;
 import com.mpt.hxqh.mpt_project.ui.widget.SwipeRefreshLayout;
+import com.mpt.hxqh.mpt_project.unit.MessageUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,7 +88,7 @@ public class Udassettransf_Details_Activity extends BaseActivity {
     private BaseAnimatorSet mBasIn;
     private BaseAnimatorSet mBasOut;
 
-    private String[] optionList = new String[]{"Back","AddLine"};
+    private String[] optionList = new String[]{"Back", "Scan", "AddLine"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -217,18 +219,23 @@ public class Udassettransf_Details_Activity extends BaseActivity {
                 @Override
                 public void onOperItemClick(AdapterView<?> parent, View view, int position, long id) {
 //                    linetypeTextView.setText(linetypeList[position]);
-                    switch (position){
+                    switch (position) {
                         case 0://Back
                             normalListDialog.superDismiss();
                             finish();
                             break;
-//                        case 1://Route
-//                            break;
-                        case 1://AddLine
+                        case 1://Scan
                             normalListDialog.superDismiss();
-                            Intent intent = new Intent(Udassettransf_Details_Activity.this,UdassettransfLine_AddNew_Activity.class);
-                            intent.putExtra("assettrannum",udassettransf.getASSETTRANNUM());
-                            intent.putExtra("LOCATION",udassettransf.getFROMLOC());
+                            Intent lineIntent = new Intent(Udassettransf_Details_Activity.this, Udtransfline_Activity.class);
+                            lineIntent.putExtra("assetnum", udassettransf.getASSETTRANNUM());
+                            lineIntent.putExtra("status", udassettransf.getSTATUS());
+                            startActivity(lineIntent);
+                            break;
+                        case 2://AddLine
+                            normalListDialog.superDismiss();
+                            Intent intent = new Intent(Udassettransf_Details_Activity.this, UdassettransfLine_AddNew_Activity.class);
+                            intent.putExtra("assettrannum", udassettransf.getASSETTRANNUM());
+                            intent.putExtra("LOCATION", udassettransf.getFROMLOC());
                             startActivity(intent);
                             break;
                     }
@@ -275,7 +282,7 @@ public class Udassettransf_Details_Activity extends BaseActivity {
      * 获取数据*
      */
     private void getData() {
-        HttpManager.getDataPagingInfo(Udassettransf_Details_Activity.this, HttpManager.getUDTRANSFLINEURL(udassettransf.getASSETTRANNUM(), page, 20), new HttpRequestHandler<Results>() {
+        HttpManager.getDataPagingInfo(Udassettransf_Details_Activity.this, HttpManager.getUDTRANSFLINEURL(udassettransf.getASSETTRANNUM(), page, 20, ""), new HttpRequestHandler<Results>() {
             @Override
             public void onSuccess(Results results) {
             }
@@ -294,14 +301,17 @@ public class Udassettransf_Details_Activity extends BaseActivity {
                             items = new ArrayList<UDTRANSFLINE>();
                             initAdapter(items);
                         }
-                        for (int i = 0; i < item.size(); i++) {
-                            items.add(item.get(i));
+                        if (page > totalPages) {
+                            MessageUtils.showMiddleToast(Udassettransf_Details_Activity.this, getString(R.string.have_load_out_all_the_data));
+                        } else {
+                            for (int i = 0; i < item.size(); i++) {
+                                items.add(item.get(i));
+                            }
+                            addData(item);
                         }
-                        addData(item);
                     }
                     nodatalayout.setVisibility(View.GONE);
-
-                    initAdapter(items);
+                    //initAdapter(items);
                 }
             }
 

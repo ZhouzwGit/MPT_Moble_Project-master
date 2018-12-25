@@ -15,6 +15,53 @@ public class POLINE implements Serializable {
     public String SCANNER;//SCANNER
     public String SERIALNUM;//SERIALNUM
     public String STORELOC;//STORELOC
+    public String SCANSN;
+    public String SECSCAN;
+    public String REMARK;
+    public String ASSETNUM;
+    public String POLINEID;
+    public String getPOLINEID() {
+        return POLINEID;
+    }
+
+    public void setPOLINEID(String POLINEID) {
+        if (POLINEID!=null&&POLINEID.contains(",")){
+            POLINEID = POLINEID.replace(",","");
+        }
+        this.POLINEID = POLINEID;
+    }
+
+    public String getASSETNUM() {
+        return ASSETNUM;
+    }
+
+    public void setASSETNUM(String ASSETNUM) {
+        this.ASSETNUM = ASSETNUM;
+    }
+
+    public String getSECSCAN() {
+        return SECSCAN;
+    }
+
+    public void setSECSCAN(String SECSCAN) {
+        this.SECSCAN = SECSCAN;
+    }
+
+    public String getREMARK() {
+        return REMARK;
+    }
+
+    public void setREMARK(String REMARK) {
+        this.REMARK = REMARK;
+    }
+
+    public String getSCANSN() {
+        return SCANSN;
+    }
+
+    public void setSCANSN(String SCANSN) {
+        this.SCANSN = SCANSN;
+    }
 
     public String getEXIST() {
         return EXIST;
@@ -78,5 +125,21 @@ public class POLINE implements Serializable {
 
     public void setSTORELOC(String STORELOC) {
         this.STORELOC = STORELOC;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("{");
+        sb.append("\"SERIALNUM\":\"")
+                .append(SERIALNUM==null?"":SERIALNUM).append('\"');
+        sb.append(",\"SCANSN\":\"")
+                .append(SCANSN==null?"":SCANSN).append('\"');
+        sb.append(",\"SECSCAN\":\"")
+                .append(SECSCAN==null?"":SECSCAN).append('\"');
+        sb.append(",\"REMARK\":\"")
+                .append(REMARK==null?"":REMARK).append('\"');
+        sb.append(",\"relationShip\":[{\"\":\"\"}]");
+        sb.append('}');
+        return sb.toString();
     }
 }

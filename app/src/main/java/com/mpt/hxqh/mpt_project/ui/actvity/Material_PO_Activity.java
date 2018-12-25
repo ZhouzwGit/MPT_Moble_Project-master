@@ -38,6 +38,7 @@ import com.mpt.hxqh.mpt_project.bean.Results;
 import com.mpt.hxqh.mpt_project.manager.AppManager;
 import com.mpt.hxqh.mpt_project.model.PO;
 import com.mpt.hxqh.mpt_project.ui.widget.SwipeRefreshLayout;
+import com.mpt.hxqh.mpt_project.unit.MessageUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -98,8 +99,8 @@ public class Material_PO_Activity extends BaseActivity implements SwipeRefreshLa
     ArrayList<PO> items = new ArrayList<PO>();
     private BaseAnimatorSet mBasIn;
     private BaseAnimatorSet mBasOut;
-//    private String[] optionList = new String[]{"Back","Add","Receive scanning"};
-    private String[] optionList = new String[]{"Back","Receive scanning"};
+    //    private String[] optionList = new String[]{"Back","Add","Receive scanning"};
+    private String[] optionList = new String[]{"Back", "Receive scanning"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,7 +168,7 @@ public class Material_PO_Activity extends BaseActivity implements SwipeRefreshLa
     private View.OnClickListener addOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(Material_PO_Activity.this,PO_AddNew_Activity.class);
+            Intent intent = new Intent(Material_PO_Activity.this, PO_AddNew_Activity.class);
             startActivity(intent);
         }
     };
@@ -209,7 +210,7 @@ public class Material_PO_Activity extends BaseActivity implements SwipeRefreshLa
                 @Override
                 public void onOperItemClick(AdapterView<?> parent, View view, int position, long id) {
 //                    linetypeTextView.setText(linetypeList[position]);
-                    switch (position){
+                    switch (position) {
                         case 0://Back
                             normalListDialog.superDismiss();
                             finish();
@@ -222,7 +223,7 @@ public class Material_PO_Activity extends BaseActivity implements SwipeRefreshLa
 //                            break;
                         case 2:
                             normalListDialog.superDismiss();
-                            Intent intent2 = new Intent(Material_PO_Activity.this,PO_AddNew_Activity.class);
+                            Intent intent2 = new Intent(Material_PO_Activity.this, PO_AddNew_Activity.class);
                             startActivity(intent2);
                             break;
                     }
@@ -286,14 +287,18 @@ public class Material_PO_Activity extends BaseActivity implements SwipeRefreshLa
                             items = new ArrayList<PO>();
                             initAdapter(items);
                         }
-                        for (int i = 0; i < item.size(); i++) {
-                            items.add(item.get(i));
+                        if (page > totalPages) {
+                            MessageUtils.showMiddleToast(Material_PO_Activity.this, getString(R.string.have_load_out_all_the_data));
+                        }else {
+                            for (int i = 0; i < item.size(); i++) {
+                                items.add(item.get(i));
+                            }
+                            addData(item);
                         }
-                        addData(item);
+
                     }
                     nodatalayout.setVisibility(View.GONE);
-
-                    initAdapter(items);
+                    //initAdapter(items);
                 }
             }
 

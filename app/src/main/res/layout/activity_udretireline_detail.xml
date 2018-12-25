@@ -52,13 +52,10 @@
                 android:layout_marginTop="@dimen/dimen_10"
                 android:background="@color/white"
                 android:orientation="vertical">
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
-
-
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="@dimen/dimens_40dp"
@@ -97,37 +94,7 @@
                         android:layout_weight="1"
                         android:background="@color/light_bule"
                         android:gravity="center"
-                        android:text="QTY"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/dimens_12sp" />
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="@dimen/dimens_40dp"
-                        android:layout_marginLeft="1dp"
-                        android:layout_weight="1"
-                        android:background="@color/light_bule"
-                        android:gravity="center"
-                        android:text="QTY*SN"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/dimens_12sp" />
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="@dimen/dimens_40dp"
-                        android:layout_marginLeft="1dp"
-                        android:layout_weight="1"
-                        android:background="@color/light_bule"
-                        android:gravity="center"
                         android:text="Remark"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/dimens_12sp" />
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="@dimen/dimens_40dp"
-                        android:layout_marginLeft="1dp"
-                        android:layout_weight="1"
-                        android:background="@color/light_bule"
-                        android:gravity="center"
-                        android:text="MATCH?"
                         android:textColor="@color/black"
                         android:textSize="@dimen/dimens_12sp" />
                 </LinearLayout>
@@ -140,7 +107,6 @@
                         android:id="@+id/swipe_container"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
-
                         <android.support.v7.widget.RecyclerView
                             android:id="@+id/recyclerView_id"
                             android:layout_width="match_parent"

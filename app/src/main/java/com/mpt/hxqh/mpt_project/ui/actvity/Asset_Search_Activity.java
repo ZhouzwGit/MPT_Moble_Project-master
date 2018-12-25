@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -28,6 +30,7 @@ import com.mpt.hxqh.mpt_project.dialog.FlippingLoadingDialog;
 import com.mpt.hxqh.mpt_project.manager.AppManager;
 import com.mpt.hxqh.mpt_project.model.ASSET;
 import com.mpt.hxqh.mpt_project.ui.widget.SwipeRefreshLayout;
+import com.mpt.hxqh.mpt_project.unit.MessageUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -302,14 +305,19 @@ public class Asset_Search_Activity extends BaseActivity {
                             items = new ArrayList<ASSET>();
                             initAdapter(items);
                         }
-                        for (int i = 0; i < item.size(); i++) {
-                            items.add(item.get(i));
+
+                        if (page > totalPages) {
+                            MessageUtils.showMiddleToast(Asset_Search_Activity.this, getString(R.string.have_load_out_all_the_data));
+                        } else {
+                            for (int i = 0; i < item.size(); i++) {
+                                items.add(item.get(i));
+                            }
+                            addData(item);
                         }
-                        addData(item);
                     }
                     nodatalayout.setVisibility(View.GONE);
+                    //initAdapter(items);
 
-                    initAdapter(items);
                 }
             }
 
@@ -320,9 +328,7 @@ public class Asset_Search_Activity extends BaseActivity {
                 nodatalayout.setVisibility(View.VISIBLE);
             }
         });
-
     }
-
 
     /**
      * 获取数据*
